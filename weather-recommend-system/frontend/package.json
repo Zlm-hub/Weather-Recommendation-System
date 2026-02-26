@@ -1,0 +1,23 @@
+{
+  "name": "weather-recommend-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "echarts": "^5.6.0",
+    "element-plus": "^2.4.3",
+    "vue": "^3.3.8",
+    "vue-echarts": "^6.6.0",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.0",
+    "vite": "^5.0.0"
+  }
+}

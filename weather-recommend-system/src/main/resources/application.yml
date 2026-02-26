@@ -1,0 +1,84 @@
+spring:
+  # 1. 数据库配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/weather_recommend?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # 2. Redis配置
+  redis:
+    host: localhost
+    port: 6379
+    password: "123456"
+    database: 0
+    timeout: 5000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 2
+
+  # 3. 文件上传限制
+  servlet:
+    multipart:
+      max-file-size: 5MB      # 单个文件最大 5MB
+      max-request-size: 10MB  # 总上传请求最大 10MB
+
+# MyBatis-Plus配置
+mybatis-plus:
+  mapper-locations: classpath:mybatis/*.xml
+  type-aliases-package: com.weather.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 开发环境开启SQL日志，生产环境建议关闭
+  global-config:
+    db-config:
+      id-type: AUTO
+      table-prefix: t_
+
+# 服务器端口
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# ==========================================
+# 气象API配置 (核心部分)
+# ==========================================
+weather:
+  api:
+    # 和风天气 (备用)
+    hefeng:
+      key: bd644a23c7d642c89a04bb9832f7ec9f
+      url: https://devapi.qweather.com/v7/weather/now
+      location-url: https://geoapi.qweather.com/v2/city/lookup
+      air-url: https://devapi.qweather.com/v7/air/now
+
+    # 心知天气 (当前主力) -> 对应 Java 中的 @Value("${weather.api.xinzhi.key}")
+    xinzhi:
+      key: SZ3g6cvCiaDCzdQgL
+      url: https://api.seniverse.com/v3/weather/now.json
+
+    retry: 3
+    timeout: 5000
+    cache-expire: 3600
+
+# JWT Token配置
+jwt:
+  secret: weather_recommend_system_2024_secret_key
+  expiration: 604800000  # 7天
+
+# 日志级别
+logging:
+  level:
+    com.weather: INFO
+    org.springframework.web: INFO
+    com.baomidou.mybatisplus: INFO
+
+# ==========================================
+# 文件存储路径
+# 注意：请确保你的电脑存在该磁盘路径，否则会报错！
+# ==========================================
+file:
+  upload-path: D:/weather_uploads/  # 如果没有D盘，请改为 E:/weather_uploads/ 或其他存在的路径
